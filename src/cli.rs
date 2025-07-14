@@ -65,6 +65,7 @@ pub fn build_cli_command() -> Command {
                         .help("the content to write in the file")
                         .required(true)
                         .value_name("CONTENT")
+                        .num_args(1..)
                         .action(ArgAction::Append),
                 ),
         )
