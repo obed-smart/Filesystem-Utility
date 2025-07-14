@@ -5,4 +5,5 @@ edition = "2024"
 
 [dependencies]
 clap = { version = "4.5.41", features = ["cargo"] }
+opener = "0.8.2"
 walkdir = "2.5.0"

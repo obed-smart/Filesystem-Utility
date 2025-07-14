@@ -3,9 +3,10 @@ use std::{
     io::{self, Write},
     path::{Path, PathBuf},
 };
+
 use walkdir::WalkDir;
 
-// walk throug from the root directory to find the folder
+// walk through from the root directory to find the folder
 // return if not None found
 fn find_folder_by_name(path: String) -> io::Result<Option<PathBuf>> {
     for entry in WalkDir::new(".").into_iter().filter_map(Result::ok) {
@@ -21,6 +22,10 @@ fn find_folder_by_name(path: String) -> io::Result<Option<PathBuf>> {
 
     Ok(None)
 }
+
+// traverse the base folder and file he matching file name
+// if base is not found return err
+// if base is not a directory return err
 fn find_in_folder(base: String, path: String) -> io::Result<Option<PathBuf>> {
     let base_path = Path::new(&base);
 
@@ -136,6 +141,7 @@ pub fn handle_create_in_to_file(in_to_folder: String, file: String) -> io::Resul
     Ok(())
 }
 
+// write to a file fron the cli on the root only
 pub fn handle_write_file(file: String, content: &Vec<String>) -> io::Result<()> {
     let file_path = Path::new(&file);
 
@@ -160,6 +166,9 @@ pub fn handle_write_file(file: String, content: &Vec<String>) -> io::Result<()> 
 
     Ok(())
 }
+
+// write to a file from the cli provided that the base folder or the root (.) is given
+// return err if ot found
 
 pub fn handle_write_in_to_file(
     file: String,
@@ -190,3 +199,15 @@ pub fn handle_write_in_to_file(
         }
     }
 }
+
+
+// pub fn handle_open_file(file:String) {
+//     match Command::new("code")
+//         .arg(&file)
+//         .spawn() 
+//     {
+//         Ok(_) => println!("🚀 Opened '{}' in VS Code.", file),
+//         Err(e) => eprintln!("❌ Failed to open file in VS Code: {}", e),
+//     }
+
+// }

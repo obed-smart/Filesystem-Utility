@@ -63,10 +63,15 @@ pub fn build_cli_command() -> Command {
                     Arg::new("content")
                         .long("content")
                         .help("the content to write in the file")
-                        .required(true)
+                        .required(false)
                         .value_name("CONTENT")
                         .num_args(1..)
                         .action(ArgAction::Append),
-                ),
+                ), // .arg(
+                   //     Arg::new("open")
+                   //         .long("open")
+                   //         .help("Open file after writing")
+                   //         .action(ArgAction::SetTrue),
+                   // ),
         )
 }

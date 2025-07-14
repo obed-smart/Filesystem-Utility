@@ -10,6 +10,7 @@ pub fn handle_write(sub_match: &ArgMatches) {
         .collect();
     let file_name = sub_match.get_one::<String>("file");
     let in_to_folder = sub_match.get_one::<String>("in");
+    // let open_file = sub_match.get_flag("open");
 
     if in_to_folder.is_none() {
         if let Some(file) = file_name {
@@ -65,4 +66,14 @@ pub fn handle_write(sub_match: &ArgMatches) {
             }
         }
     }
+
+    // if open_file && file_name.is_none() {
+    //     println!("❌ To use --open you need to provide a file name")
+    // } else if open_file {
+    //     if let Some(file) = file_name {
+    //         handle_open_file(file.to_string());
+    //     } else {
+    //         eprintln!("⚠️ Cannot open file — no file name provided.");
+    //     }
+    // }
 }
