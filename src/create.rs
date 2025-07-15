@@ -12,21 +12,6 @@ pub fn handle_create(sub_match: &ArgMatches) {
     let file_name = sub_match.get_one::<String>("file");
     let in_to_folder = sub_match.get_one::<String>("in");
 
-    if !folders_name.is_empty() {
-        if folders_name.len() > 1 {
-            for folder in folders_name {
-                println!("✅ creating folder:{:#?}", folder);
-                // match create_folder(&folder.to_string()) {
-                //     Ok(_) => println!("✅ creating folder:{:#?}", folder),
-                //     Err(e) => eprintln!("{e}"),
-                // }
-            }
-        } else {
-            eprintln!(" ❌ You can not create one folder with this command");
-            return;
-        }
-    }
-
     if let Some(parent_folder) = in_to_folder {
         println!("📁 New folder created: parent {} ", parent_folder)
     }
@@ -58,7 +43,7 @@ pub fn handle_create(sub_match: &ArgMatches) {
         println!("📁 New file created: {}", file)
     }
 
-    if in_to_folder.is_some() && folder_name.is_none() && file_name.is_none() {
+    if in_to_folder.is_some() && folder_name.is_none() && file_name.is_none() && folders_name.is_empty() {
         eprintln!("❌ You must provide either --folder or --file when using --in");
         return;
     } else if let (Some(folder), Some(in_to)) = (folder_name, in_to_folder) {
@@ -101,6 +86,30 @@ pub fn handle_create(sub_match: &ArgMatches) {
         match handle_create_file(file.to_string()) {
             Ok(_) => println!("✅ New file created successfully"),
             Err(e) => eprint!(" Failed when creating file : {}", e),
+        }
+    }
+
+    if !folders_name.is_empty() {
+        if folders_name.len() > 1 {
+            for folder in folders_name {
+                if let Some(in_to) = in_to_folder {
+                    match handle_create_in_to_folder(in_to.to_string(), folder.to_string()) {
+                        Ok(_) => println!(
+                            "✅ New folder {:?} was created and inserted in {:?} folder",
+                            folder_name, in_to
+                        ),
+                        Err(e) => eprintln!("❌ Error : {e}"),
+                    }
+                } else {
+                    match create_folder(&folder.to_string()) {
+                        Ok(_) => println!("✅ creating folder:{:#?}", folder),
+                        Err(e) => eprintln!("{e}"),
+                    }
+                }
+            }
+        } else {
+            eprintln!(" ❌ You can not create one folder with this command");
+            return;
         }
     }
 }
